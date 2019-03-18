@@ -172,7 +172,6 @@ export class ControllerDataset {
     const classId = (await predictedClass.data())[0];
     predictedClass.dispose();
 
-    console.log(classId)
     return classId;
   }
 }
