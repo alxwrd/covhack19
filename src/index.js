@@ -16,7 +16,6 @@
  */
 
 import 'babel-polyfill';
-import * as tf from '@tensorflow/tfjs';
 
 import { ControllerDataset } from './controller_dataset';
 import { Webcam } from './webcam';

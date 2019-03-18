@@ -14,9 +14,9 @@
     "vega-embed": "^3.0.0"
   },
   "scripts": {
-    "start": "npm run copy-assets && cross-env NODE_ENV=development parcel index.html --no-hmr --open",
-    "build": "npm run copy-assets && cross-env NODE_ENV=production parcel build index.html  --no-minify --public-url ./",
-    "copy-assets": "rm -rf dist/ && mkdir dist && cp -R ./images ./dist/images && cp options.json ./dist/",
+    "start": "npm run copy-assets && cross-env NODE_ENV=development parcel ./src/index.html --no-hmr --open",
+    "build": "npm run copy-assets && cross-env NODE_ENV=production parcel build ./src/index.html  --no-minify --public-url ./",
+    "copy-assets": "rm -rf dist/ && mkdir dist && cp -R ./src/images ./dist/images && cp ./src/options.json ./dist/",
     "publish": "npm run build && gh-pages -d dist",
     "link-local": "yalc link"
   },
