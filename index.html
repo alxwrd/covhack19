@@ -26,38 +26,40 @@ limitations under the License.
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-teal.min.css">
   <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
   <script defer="" src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="style.4510f950.css">
+  <link rel="stylesheet" type="text/css" href="style.e55ad4fa.css">
 
 </head>
 
 <body>
 
   <div id="app">
+    <H1 id="letter" align="center" size="20"></H1>
     <div id="images">
-      <H1 id="letter" align="center" size="20"></H1>
       <div class="side-by-side" id="webcam-container">
-        <video autoplay="" playsinline="" muted="" id="webcam" width="224" height="224"></video>
+        <video autoplay="" playsinline="" muted="" id="webcam" width="244" height="224"></video>
       </div>
       <div class="side-by-side" id="image-container">
         <img src="a.cbe5c380.png" id="image">
       </div>
-      <div id="loading-bar"></div>
-      <button id="start">start</button>
-      <button id="train">train</button>
-      <button id="submit">submit</button>
     </div>
+    <div id="loading-bar"></div>
 
-    <p id="scenario">
-      <!-- This is a scenario. You have been presented with an [a]pple, [b]annana, and a [c]herry. Which do you choose? -->
-    </p>
+    <button id="start">start</button>
+    <button id="train">train</button>
+
+    <span id="scenario">
+      This is a scenario. You have been presented with an [a]pple, [b]annana, and a [c]herry. Which do you choose?
+    </span>
 
     <div id="input-container">
       <span id="prompt">></span>
-      <span id="choice"></span>
+      <span id="choice">apple</span>
     </div>
   </div>
 
-  <script src="covhack19.f4cae1b8.js"></script>
+  <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
+  <script src="src.847d025a.js"></script>
 </body>
 
 </html>

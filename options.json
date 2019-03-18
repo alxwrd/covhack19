@@ -81,11 +81,11 @@
         "Options": {
             "i": "ice",
             "u": "unicycle",
-            "k": "key"
+            "x": "Xenomorph"
         },
         "i": "The attacker starts to feel chilly",
         "u": "The attacker runs in fear",
-        "k": "You successfully defend yourself but hurt countless others"
+        "x": "You successfully defend yourself but hurt countless others"
     },
     {
         "Scenario": "You wake up in the morning and the first thing you look for is water, zinc or sausage?",
