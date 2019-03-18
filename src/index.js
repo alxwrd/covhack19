@@ -41,6 +41,7 @@ async function init() {
 
 
 function main(data) {
+  document.getElementById("start").style.display = "none";
   let controllerDataset = new ControllerDataset(NUM_CLASSES);
 
   console.log(data)
@@ -116,6 +117,7 @@ function main(data) {
         controllerDataset.predict(img).then((result) => {
           let key = Object.keys(data.Options)[result];
           typeWriter(data[key]);
+          document.getElementById("start").style.display = "";
         });
       };
     }

@@ -33,26 +33,27 @@ limitations under the License.
 <body>
 
   <div id="app">
+    <H1 id="letter" align="center" size="20"></H1>
     <div id="images">
-      <H1 id="letter" align="center" size="20"></H1>
       <div class="side-by-side" id="webcam-container">
-        <video autoplay playsinline muted id="webcam" width="224" height="224"></video>
+        <video autoplay playsinline muted id="webcam" width="244" height="224"></video>
       </div>
       <div class="side-by-side" id="image-container">
         <img src="images/a.png" id="image">
       </div>
-      <div id="loading-bar"></div>
-      <button id="start">start</button>
-      <button id="train">train</button>
     </div>
+    <div id="loading-bar"></div>
 
-    <p id="scenario">
-      <!-- This is a scenario. You have been presented with an [a]pple, [b]annana, and a [c]herry. Which do you choose? -->
-    </p>
+    <button id="start">start</button>
+    <button id="train">train</button>
+
+    <span id="scenario">
+      This is a scenario. You have been presented with an [a]pple, [b]annana, and a [c]herry. Which do you choose?
+    </span>
 
     <div id="input-container">
       <span id="prompt">></span>
-      <span id="choice"></span>
+      <span id="choice">apple</span>
     </div>
   </div>
 
