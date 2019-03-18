@@ -27,6 +27,8 @@ const NUM_CLASSES = 3;
 // A webcam class that generates Tensors from the images from the webcam.
 const webcam = new Webcam(document.getElementById('webcam'));
 
+var watching;
+
 
 async function init() {
   try {
@@ -34,10 +36,11 @@ async function init() {
   } catch (e) {
     document.getElementById('no-webcam').style.display = 'block';
   }
+  document.getElementById("train").style.display = "none";
 }
 
 
-async function loop(data) {
+function main(data) {
   let controllerDataset = new ControllerDataset(NUM_CLASSES);
 
   console.log(data)
@@ -70,60 +73,79 @@ async function loop(data) {
     }
 
     if (label == 2) {
+      document.getElementById("train").style.display = "none";
       console.log("training network")
 
       console.log("starting story ...")
 
-
-      typeWriter(data.Scenario);
-
-
-      // can't figure out why it's predicitng before training
       controllerDataset.train()
 
+      typeWriterPromise(data.Scenario).then(() => {
+        var submitTimeout = 0;
+        var currentClassId;
+        var lastClassId;
+
+        watching = setInterval(() => {
+          let img = webcam.capture();
+
+          controllerDataset.predict(img).then((result) => {
+            let key = Object.keys(data.Options)[result];
+            document.getElementById("image").src = `images/${key}.png`
+            document.getElementById("letter").innerHTML = key;
+            document.getElementById("choice").innerText = data.Options[key];
+            lastClassId = currentClassId;
+            currentClassId = result;
+          });
+
+          if (lastClassId === currentClassId){
+            submitTimeout ++;
+          } else {
+            submitTimeout = 0;
+          }
+          console.log(submitTimeout)
+
+          if (submitTimeout > 10) {
+            submit();
+          }
+        }, 500)
+      })
+
       function submit() {
+        clearInterval(watching);
         let img = webcam.capture();
-        controllerDataset.predict(img).then(function (result) {
+        controllerDataset.predict(img).then((result) => {
           let key = Object.keys(data.Options)[result];
-          document.getElementById("image").src = `images/${key}.png`
-          document.getElementById("letter").innerHTML = key;
-          document.getElementById("choice").innerText = data.Options[key];
-        });
-      }
-
-      setInterval(() => {
-        submit()
-      }, 500)
-
-      document.getElementById("submit").addEventListener("click", () => {
-        let img = webcam.capture();
-        controllerDataset.predict(img).then(function (result) {
-          let key = Object.keys(data.Options)[result];
-
           typeWriter(data[key]);
         });
-
-      })
+      };
     }
   })
 }
 
 
 document.getElementById("start").addEventListener("click", () => {
+  reset();
+
   fetch("options.json").then((response) => {
     return response.json()
   })
     .then((data) => {
+      clearInterval(watching)
       let scenario = data[Math.floor(Math.random() * data.length)];
 
-      loop(scenario);
-
+      main(scenario);
     })
 })
 
 
-function typeWriter(text, pos) {
-  let speed = Math.floor(Math.random() * 200);
+let typeWriterPromise = (text, pos) => {
+  return new Promise((resolve) => {
+    typeWriter(text, pos, resolve)
+  })
+}
+
+function typeWriter(text, pos, resolve) {
+  let speed = Math.floor(Math.random() * 100);
 
   if (!pos) {
     pos = 0;
@@ -135,11 +157,29 @@ function typeWriter(text, pos) {
 
   if (pos < text.length) {
     document.getElementById("scenario").innerHTML += text.charAt(pos);
-    pos++;
     setTimeout(() => {
-      typeWriter(text, pos)
+      pos++
+      typeWriter(text, pos, resolve)
     }, speed);
+  } else {
+    if (resolve) { resolve() }
   }
+}
+
+
+function reset() {
+  document.getElementById("choice").innerText = "";
+  document.getElementById("scenario").innerText = "";
+  document.getElementById("train").style.display = "";
+
+  clearEventListeners("train");
+}
+
+
+function clearEventListeners(elementId) {
+  var old_element = document.getElementById(elementId);
+  var new_element = old_element.cloneNode(true);
+  old_element.parentNode.replaceChild(new_element, old_element);
 }
 
 init();
