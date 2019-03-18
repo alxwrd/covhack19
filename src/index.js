@@ -20,6 +20,11 @@ import 'babel-polyfill';
 import { ControllerDataset } from './controller_dataset';
 import { Webcam } from './webcam';
 
+NProgress.configure({
+  parent: "#images",
+  showSpinner: false
+})
+
 // The number of classes we want to predict. In this example, we will be
 // predicting 4 classes for up, down, left, and right.
 const NUM_CLASSES = 3;
@@ -57,7 +62,7 @@ function main(data) {
 
   document.getElementById("train").addEventListener("click", () => {
     console.log("training ...")
-    for (let x = 1; x < 30; x++) {
+    for (let x = 0; x < 30; x++) {
       controllerDataset.addExample(webcam.capture(), label)
       console.log(`training on label ${label}`)
     }
@@ -87,6 +92,7 @@ function main(data) {
         var lastClassId;
 
         watching = setInterval(() => {
+          NProgress.set(submitTimeout / 10)
           let img = webcam.capture();
 
           controllerDataset.predict(img).then((result) => {
@@ -98,12 +104,11 @@ function main(data) {
             currentClassId = result;
           });
 
-          if (lastClassId === currentClassId){
-            submitTimeout ++;
+          if (lastClassId === currentClassId) {
+            submitTimeout++;
           } else {
             submitTimeout = 0;
           }
-          console.log(submitTimeout)
 
           if (submitTimeout > 10) {
             submit();
