@@ -9,22 +9,27 @@ html, body {
 }
 
 .title {
-    width: 10em;
+    width: 9vmax;
 }
 
 .header {
     background-color: #7efcbd;
+    box-shadow: 0 10px 20px 5px rgba(168,182,191,0.6);
     padding: 1em 1em;
     text-align: center;
-    transition: 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+
+#app {
+    transition: all 1s ease-in-out;
 }
 
 .header-hidden {
-    transform: translate(0px, -19em);
+    transform: translate(0px, -17.5vmax);
 }
 
 .header h2 {
-    font-size: 2em;
+    font-size: 2vmax;
     margin-top: 0px;
 }
 

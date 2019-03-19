@@ -132,6 +132,7 @@ function main(data) {
 
 document.getElementById("start").addEventListener("click", () => {
   document.getElementById("header").classList.add("header-hidden")
+  document.getElementById("app").classList.add("header-hidden")
   reset();
 
   fetch("options.json").then((response) => {
