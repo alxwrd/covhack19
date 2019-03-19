@@ -33,6 +33,11 @@ html, body {
     margin-top: 0px;
 }
 
+#nprogress .bar {
+    height: 5px !important;
+    box-shadow: 0 0 10px #29d, 0 0 10px #29d !important;
+}
+
 .btn {
     display: inline-block;
     cursor: pointer;

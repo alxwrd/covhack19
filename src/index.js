@@ -21,8 +21,9 @@ import { ControllerDataset } from './controller_dataset';
 import { Webcam } from './webcam';
 
 NProgress.configure({
-  parent: "#images",
-  showSpinner: false
+  parent: "#app",
+  showSpinner: false,
+  minimum: 0.0
 })
 
 // The number of classes we want to predict. In this example, we will be
@@ -92,7 +93,7 @@ function main(data) {
         var lastClassId;
 
         watching = setInterval(() => {
-          NProgress.set(submitTimeout / 10)
+          NProgress.set(submitTimeout / 50)
           let img = webcam.capture();
 
           controllerDataset.predict(img).then((result) => {
@@ -110,10 +111,10 @@ function main(data) {
             submitTimeout = 0;
           }
 
-          if (submitTimeout > 10) {
+          if (submitTimeout > 50) {
             submit();
           }
-        }, 500)
+        }, 100)
       })
 
       function submit() {
