@@ -1,10 +1,69 @@
-body {
-    background: #111;
-    font-family: 'Share Tech Mono', monospace;
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 16.5px;
+    font-family:
+        Avenir, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+        "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+.title {
+    width: 10em;
+}
+
+.header {
+    background-color: #7efcbd;
+    padding: 1em 1em;
+    text-align: center;
+    transition: 1s ease-in-out;
+}
+
+.header-hidden {
+    transform: translate(0px, -19em);
+}
+
+.header h2 {
+    font-size: 2em;
+    margin-top: 0px;
+}
+
+.btn {
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    padding: .75em 1em;
+    transition: none;
+    margin: .25em 0;
+    position: relative;
+    width: 8em;
+}
+
+.btn-pink {
+    background-color: #bd7efc;
     color: #fff;
-    text-shadow: 1px -1px 0.5vw #eee, 1px -1px 0.5vh #eee;
-    background-color: #836953;
-    font-size: 6vmin;
+    box-shadow: 0 4px #764f9e;
+}
+
+.btn-pink:hover {
+    top: 2px;
+    box-shadow: 0 2px #764f9e;
+}
+
+.btn-pink:active {
+    box-shadow: 0 0 #bd7efc;
+    top: 4px;
+}
+
+.noselect {
+    /* https://stackoverflow.com/a/4407335/7220776 */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 button {
@@ -30,8 +89,6 @@ button {
     display: block;
     margin: 0 auto;
     border-radius: 3px;
-    height: 100%;
-    width: 25vh;
 
     transform: rotateY(180deg);
     -webkit-transform:rotateY(180deg); /* Safari and Chrome */
