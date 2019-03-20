@@ -23,7 +23,8 @@ import { Webcam } from './webcam';
 NProgress.configure({
   parent: "#app",
   showSpinner: false,
-  minimum: 0.0
+  minimum: 0.0,
+  speed: 50,
 })
 
 // The number of classes we want to predict. In this example, we will be
@@ -55,7 +56,7 @@ function main(data) {
     const timeout = async ms => new Promise(res => setTimeout(res, ms));
 
     for (let x = 0; x <= iterations; x++) {
-      await timeout(1)
+      await timeout(100)
       NProgress.set(x / iterations)
       controllerDataset.addExample(webcam.capture(), label)
     }
