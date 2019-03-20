@@ -25,6 +25,7 @@ export class Webcam {
    */
   constructor(webcamElement) {
     this.webcamElement = webcamElement;
+    this.active = false;
   }
 
   /**
@@ -78,22 +79,33 @@ export class Webcam {
   }
 
   setup() {
-    const navigatorAny = navigator;
-    navigator.getUserMedia = navigator.getUserMedia ||
-      navigatorAny.webkitGetUserMedia || navigatorAny.mozGetUserMedia ||
-      navigatorAny.msGetUserMedia;
-    if (navigator.getUserMedia) {
-      navigator.getUserMedia(
-        { video: true },
-        stream => {
-          this.webcamElement.srcObject = stream;
-          this.webcamElement.addEventListener('loadeddata', () => {
-            this.adjustVideoSize(
-              this.webcamElement.videoWidth,
-              this.webcamElement.videoHeight);
-          }, false);
-        },
-        error => {});
-    }
+    return new Promise((resolve, reject) => {
+      const navigatorAny = navigator;
+      navigator.getUserMedia = (
+        navigator.getUserMedia ||
+        navigatorAny.webkitGetUserMedia ||
+        navigatorAny.mozGetUserMedia ||
+        navigatorAny.msGetUserMedia
+      )
+      if (navigator.getUserMedia) {
+        navigator.getUserMedia(
+          { video: true },
+          stream => {
+            this.active = true;
+            this.webcamElement.srcObject = stream;
+            this.webcamElement.addEventListener('loadeddata', () => {
+              this.adjustVideoSize(
+                this.webcamElement.videoWidth,
+                this.webcamElement.videoHeight);
+              resolve()
+            }, false);
+          },
+          error => {
+            reject(error)
+          });
+      } else {
+        reject(new Error("Could not find webcam API"))
+      }
+    })
   }
 }

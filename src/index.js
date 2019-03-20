@@ -36,16 +36,6 @@ const webcam = new Webcam(document.getElementById('webcam'));
 var watching;
 
 
-async function init() {
-  try {
-    webcam.setup()
-  } catch (e) {
-    document.getElementById('no-webcam').style.display = 'block';
-  }
-  document.getElementById("train").style.display = "none";
-}
-
-
 function main(data) {
   document.getElementById("start").style.display = "none";
   document.getElementById("train").style.display = "";
@@ -147,20 +137,33 @@ function main(data) {
 }
 
 
-document.getElementById("start").addEventListener("click", () => {
-  document.getElementById("header").classList.add("header-hidden")
-  document.getElementById("app").classList.add("header-hidden")
+document.getElementById("start").addEventListener("click", async () => {
   reset();
+  if (!webcam.active) {
+    webcam.setup()
+      .then(() => {
+        document.getElementById("header").classList.add("header-hidden")
+        document.getElementById("app").classList.add("header-hidden")
+        start()
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  } else {
+    start()
+  }
 
-  fetch("options.json").then((response) => {
-    return response.json()
-  })
-    .then((data) => {
-      clearInterval(watching)
-      let scenario = data[Math.floor(Math.random() * data.length)];
-
-      main(scenario);
+  function start() {
+    fetch("options.json").then((response) => {
+      return response.json()
     })
+      .then((data) => {
+        clearInterval(watching)
+        let scenario = data[Math.floor(Math.random() * data.length)];
+
+        main(scenario);
+      })
+  }
 })
 
 
@@ -206,5 +209,3 @@ function clearEventListeners(elementId) {
   var new_element = old_element.cloneNode(true);
   old_element.parentNode.replaceChild(new_element, old_element);
 }
-
-init();
