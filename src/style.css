@@ -7,6 +7,8 @@ html, body {
         "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
         "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     overflow: hidden;
+    background-color: #f9f4ff;
+    color: #191023;
 }
 
 .title {
@@ -53,7 +55,7 @@ html, body {
 
 .btn-pink {
     background-color: #bd7efc;
-    color: #fff;
+    color: #191023;
     box-shadow: 0 4px #764f9e;
 }
 
@@ -92,7 +94,6 @@ button {
 #images {
     display: flex;
     flex-wrap: wrap;
-    background: #FFF;
     height: 50%;
 }
 
