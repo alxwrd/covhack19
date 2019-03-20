@@ -17,12 +17,14 @@
 
 import 'babel-polyfill';
 
-import { ControllerDataset } from './controller_dataset';
+import { ControllerDataset, prepareNetwork } from './controller_dataset';
 import { Webcam } from './webcam';
 
 NProgress.configure({
-  parent: "#images",
-  showSpinner: false
+  parent: "#app",
+  showSpinner: false,
+  minimum: 0.01,
+  speed: 50,
 })
 
 // The number of classes we want to predict. In this example, we will be
@@ -35,18 +37,9 @@ const webcam = new Webcam(document.getElementById('webcam'));
 var watching;
 
 
-async function init() {
-  try {
-    webcam.setup()
-  } catch (e) {
-    document.getElementById('no-webcam').style.display = 'block';
-  }
-  document.getElementById("train").style.display = "none";
-}
-
-
 function main(data) {
   document.getElementById("start").style.display = "none";
+  document.getElementById("train").style.display = "";
   let controllerDataset = new ControllerDataset(NUM_CLASSES);
 
   console.log(data)
@@ -59,13 +52,28 @@ function main(data) {
   document.getElementById("letter").innerHTML = key;
 
 
+  async function trainLabel(label, iterations) {
+    const timeout = async ms => new Promise(res => setTimeout(res, ms));
 
-  document.getElementById("train").addEventListener("click", () => {
-    console.log("training ...")
-    for (let x = 0; x < 30; x++) {
+    for (let x = 0; x <= iterations; x++) {
+      await timeout(100)
+      NProgress.set(x / iterations)
       controllerDataset.addExample(webcam.capture(), label)
-      console.log(`training on label ${label}`)
     }
+  }
+
+  let alreadyTraining = false;
+
+  document.getElementById("train").addEventListener("click", async () => {
+    console.log("training ...")
+
+    if (alreadyTraining) {
+      return;
+    }
+    alreadyTraining = true;
+    await trainLabel(label, 50).then(() => {
+      alreadyTraining = false;
+    })
 
     console.log("moving on to next image ...")
 
@@ -80,6 +88,10 @@ function main(data) {
 
     if (label == 2) {
       document.getElementById("train").style.display = "none";
+
+      document.getElementById("start").style.visibility = "hidden";
+      document.getElementById("start").style.display = "";
+
       console.log("training network")
 
       console.log("starting story ...")
@@ -92,7 +104,7 @@ function main(data) {
         var lastClassId;
 
         watching = setInterval(() => {
-          NProgress.set(submitTimeout / 10)
+          NProgress.set(submitTimeout / 50)
           let img = webcam.capture();
 
           controllerDataset.predict(img).then((result) => {
@@ -110,10 +122,10 @@ function main(data) {
             submitTimeout = 0;
           }
 
-          if (submitTimeout > 10) {
+          if (submitTimeout > 50) {
             submit();
           }
-        }, 500)
+        }, 100)
       })
 
       function submit() {
@@ -122,7 +134,7 @@ function main(data) {
         controllerDataset.predict(img).then((result) => {
           let key = Object.keys(data.Options)[result];
           typeWriter(data[key]);
-          document.getElementById("start").style.display = "";
+          document.getElementById("start").style.visibility = "";
         });
       };
     }
@@ -130,18 +142,42 @@ function main(data) {
 }
 
 
-document.getElementById("start").addEventListener("click", () => {
-  reset();
-
-  fetch("options.json").then((response) => {
-    return response.json()
+document.getElementById("start").addEventListener("click", async () => {
+  NProgress.trickle();
+  document.getElementById("letter").innerText = "Loading model...";
+  await prepareNetwork().then(() => {
+    NProgress.done();
+    document.getElementById("letter").innerText = "";
   })
-    .then((data) => {
-      clearInterval(watching)
-      let scenario = data[Math.floor(Math.random() * data.length)];
 
-      main(scenario);
+  reset();
+  if (!webcam.active) {
+    webcam.setup()
+      .then(() => {
+        document.getElementById("header").classList.add("header-hidden")
+        document.getElementById("app").classList.add("header-hidden")
+        document.getElementById("image").height = document.getElementById("webcam").height
+        start()
+      })
+      .catch((error) => {
+        document.getElementById("letter").innerText = 
+          `⛔ Could not load webcam feed:\n\n${error.message}`;
+      })
+  } else {
+    start()
+  }
+
+  function start() {
+    fetch("options.json").then((response) => {
+      return response.json()
     })
+      .then((data) => {
+        clearInterval(watching)
+        let scenario = data[Math.floor(Math.random() * data.length)];
+
+        main(scenario);
+      })
+  }
 })
 
 
@@ -177,7 +213,6 @@ function typeWriter(text, pos, resolve) {
 function reset() {
   document.getElementById("choice").innerText = "";
   document.getElementById("scenario").innerText = "";
-  document.getElementById("train").style.display = "";
 
   clearEventListeners("train");
 }
@@ -188,5 +223,3 @@ function clearEventListeners(elementId) {
   var new_element = old_element.cloneNode(true);
   old_element.parentNode.replaceChild(new_element, old_element);
 }
-
-init();

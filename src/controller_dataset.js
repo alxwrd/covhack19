@@ -18,29 +18,17 @@ import * as tf from '@tensorflow/tfjs';
 import {Webcam} from './webcam';
 
 let truncatedMobileNet;
-let model;
-// const truncatedMobileNet = await loadTruncatedMobileNet();
-loadTruncatedMobileNet().then((result) => {
-  truncatedMobileNet =  result;
 
+export async function prepareNetwork() {
+  const mobilenet = await tf.loadLayersModel(
+    'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json'
+  );
+
+  // Return a model that outputs an internal activation.
+  const layer = mobilenet.getLayer('conv_pw_13_relu');
+  truncatedMobileNet = tf.model({inputs: mobilenet.inputs, outputs: layer.output});
   let webcam = new Webcam(document.getElementById('webcam'));
   tf.tidy(() => truncatedMobileNet.predict(webcam.capture()));
-});
-
-
-
-/**
- * A dataset for webcam controls which allows the user to add example Tensors
- * for particular labels. This object will concat them into two large xs and ys.
- */
-
-async function loadTruncatedMobileNet() {
-   const mobilenet = await tf.loadLayersModel(
-       'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
-
-   // Return a model that outputs an internal activation.
-   const layer = mobilenet.getLayer('conv_pw_13_relu');
-   return tf.model({inputs: mobilenet.inputs, outputs: layer.output});
  }
 
 
@@ -48,7 +36,7 @@ async function loadTruncatedMobileNet() {
 export class ControllerDataset {
   constructor(numClasses) {
     this.numClasses = numClasses;
-
+    this.model = undefined;
   }
 
   /**
@@ -98,7 +86,7 @@ export class ControllerDataset {
     // Creates a 2-layer fully connected model. By creating a separate model,
     // rather than adding layers to the mobilenet model, we "freeze" the weights
     // of the mobilenet model, and only train weights from the new model.
-    model = tf.sequential({
+    this.model = tf.sequential({
       layers: [
         // Flattens the input to a vector so we can use it in a dense layer. While
         // technically a layer, this only performs a reshape (and has no training
@@ -129,7 +117,7 @@ export class ControllerDataset {
     // categorical classification which measures the error between our predicted
     // probability distribution over classes (probability that an input is of each
     // class), versus the label (100% probability in the true class)>
-    model.compile({ optimizer: optimizer, loss: 'categoricalCrossentropy' });
+    this.model.compile({ optimizer: optimizer, loss: 'categoricalCrossentropy' });
 
     // We parameterize batch size as a fraction of the entire dataset because the
     // number of examples that are collected depends on how many examples the user
@@ -142,7 +130,7 @@ export class ControllerDataset {
     }
 
     // Train the model! Model.fit() will shuffle xs & ys so we don't have to.
-    model.fit(this.xs, this.ys, {
+    this.model.fit(this.xs, this.ys, {
       batchSize,
       epochs: epochs,
       callbacks: {
@@ -162,7 +150,7 @@ export class ControllerDataset {
 
       // Make a prediction through our newly-trained model using the embeddings
       // from mobilenet as input.
-      const predictions = model.predict(embeddings);
+      const predictions = this.model.predict(embeddings);
 
       // Returns the index with the maximum probability. This number corresponds
       // to the class the model thinks is the most probable given the input.
