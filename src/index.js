@@ -156,6 +156,7 @@ document.getElementById("start").addEventListener("click", async () => {
       .then(() => {
         document.getElementById("header").classList.add("header-hidden")
         document.getElementById("app").classList.add("header-hidden")
+        document.getElementById("image").height = document.getElementById("webcam").height
         start()
       })
       .catch((error) => {
