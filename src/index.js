@@ -156,7 +156,7 @@ document.getElementById("start").addEventListener("click", async () => {
       })
       .catch((error) => {
         document.getElementById("letter").innerText = 
-          `Could not load webcam feed:\n${error.message}`;
+          `⛔ Could not load webcam feed:\n\n${error.message}`;
       })
   } else {
     start()
