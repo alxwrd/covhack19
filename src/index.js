@@ -17,13 +17,13 @@
 
 import 'babel-polyfill';
 
-import { ControllerDataset } from './controller_dataset';
+import { ControllerDataset, prepareNetwork } from './controller_dataset';
 import { Webcam } from './webcam';
 
 NProgress.configure({
   parent: "#app",
   showSpinner: false,
-  minimum: 0.0,
+  minimum: 0.01,
   speed: 50,
 })
 
@@ -139,6 +139,13 @@ function main(data) {
 
 
 document.getElementById("start").addEventListener("click", async () => {
+  NProgress.trickle();
+  document.getElementById("letter").innerText = "Loading model...";
+  await prepareNetwork().then(() => {
+    NProgress.done();
+    document.getElementById("letter").innerText = "";
+  })
+
   reset();
   if (!webcam.active) {
     webcam.setup()
@@ -148,7 +155,8 @@ document.getElementById("start").addEventListener("click", async () => {
         start()
       })
       .catch((error) => {
-        console.log(error)
+        document.getElementById("letter").innerText = 
+          `Could not load webcam feed:\n${error.message}`;
       })
   } else {
     start()
