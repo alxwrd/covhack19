@@ -88,6 +88,10 @@ function main(data) {
 
     if (label == 2) {
       document.getElementById("train").style.display = "none";
+
+      document.getElementById("start").style.visibility = "hidden";
+      document.getElementById("start").style.display = "";
+
       console.log("training network")
 
       console.log("starting story ...")
@@ -130,7 +134,7 @@ function main(data) {
         controllerDataset.predict(img).then((result) => {
           let key = Object.keys(data.Options)[result];
           typeWriter(data[key]);
-          document.getElementById("start").style.display = "";
+          document.getElementById("start").style.visibility = "";
         });
       };
     }

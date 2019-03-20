@@ -113,16 +113,17 @@ button {
     width: 50%;
 }
 
+.input-text, .output-text {
+    font-family: Roboto Mono,Courier,monospace;
+    font-size: 2em;
+    font-weight: bold;
+    margin-left: 1em;
+    min-height: 1em;
+}
+
 #scenario {
     line-height: 8vmin;
     display: block;
-}
-
-#input-container {
-    height: 40px;
-    position: fixed;
-    bottom:0%;
-    width:100%;
 }
 
 #letter {
