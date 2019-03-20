@@ -48,6 +48,7 @@ async function init() {
 
 function main(data) {
   document.getElementById("start").style.display = "none";
+  document.getElementById("train").style.display = "";
   let controllerDataset = new ControllerDataset(NUM_CLASSES);
 
   console.log(data)
@@ -60,13 +61,28 @@ function main(data) {
   document.getElementById("letter").innerHTML = key;
 
 
+  async function trainLabel(label, iterations) {
+    const timeout = async ms => new Promise(res => setTimeout(res, ms));
 
-  document.getElementById("train").addEventListener("click", () => {
-    console.log("training ...")
-    for (let x = 0; x < 30; x++) {
+    for (let x = 0; x <= iterations; x++) {
+      await timeout(1)
+      NProgress.set(x / iterations)
       controllerDataset.addExample(webcam.capture(), label)
-      console.log(`training on label ${label}`)
     }
+  }
+
+  let alreadyTraining = false;
+
+  document.getElementById("train").addEventListener("click", async () => {
+    console.log("training ...")
+
+    if (alreadyTraining) {
+      return;
+    }
+    alreadyTraining = true;
+    await trainLabel(label, 50).then(() => {
+      alreadyTraining = false;
+    })
 
     console.log("moving on to next image ...")
 
@@ -180,7 +196,6 @@ function typeWriter(text, pos, resolve) {
 function reset() {
   document.getElementById("choice").innerText = "";
   document.getElementById("scenario").innerText = "";
-  document.getElementById("train").style.display = "";
 
   clearEventListeners("train");
 }
