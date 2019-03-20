@@ -1,63 +1,52 @@
-<!--
-Copyright 2018 Google LLC. All Rights Reserved.
+<!DOCTYPE html>
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-==============================================================================
--->
-<!-- <!DOCTYPE html> -->
-
-
-<html>
+<html lang="en-GB">
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Sign Adventure</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-teal.min.css">
   <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
   <script defer="" src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="style.cf4af6d5.css">
+  <link rel="stylesheet" type="text/css" href="style.dba5bbc0.css">
 
 </head>
 
 <body>
+  <header class="header" id="header">
+    <div>
+      <img class="title" src="a.99e56489.png" alt="American Sign Language letter A">
+      <img class="title" src="s.4379358a.png" alt="American Sign Language letter S">
+      <img class="title" src="l.78a605e5.png" alt="American Sign Language letter L">
+    </div>
+    <h2>Teaching ASL using Transfer Learning</h2>
+    <span class="btn btn-pink noselect" id="start">Begin</span>
+    <span class="btn btn-pink noselect" id="train" style="display: none">Train</span>
+  </header>
 
-  <div id="app">
-    <H1 id="letter" align="center" size="20"></H1>
-    <div id="images">
-      <div class="side-by-side" id="webcam-container">
-        <video autoplay="" playsinline="" muted="" id="webcam" width="244" height="224"></video>
+  <main id="app">
+    <div>
+      <H1 id="letter" align="center" size="20"></H1>
+      <div id="images">
+        <div class="side-by-side" id="webcam-container">
+          <video autoplay="" playsinline="" muted="" id="webcam" width="244" height="224"></video>
+        </div>
+        <div class="side-by-side" id="image-container">
+          <img id="image">
+        </div>
       </div>
-      <div class="side-by-side" id="image-container">
-        <img src="a.99e56489.png" id="image">
+
+      <span class="output-text" id="scenario"></span>
+
+      <div id="input-container">
+        <span class="input-text" id="prompt">></span>
+        <span class="input-text" id="choice"></span>
       </div>
     </div>
-    <div id="loading-bar"></div>
-
-    <button id="start">start</button>
-    <button id="train">train</button>
-
-    <span id="scenario"></span>
-
-    <div id="input-container">
-      <span id="prompt">></span>
-      <span id="choice"></span>
-    </div>
-  </div>
+  </main>
 
   <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
-  <script src="src.847d025a.js"></script>
+  <script src="src.60c2132d.js"></script>
 </body>
 
 </html>

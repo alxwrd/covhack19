@@ -1,0 +1,136 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 16.5px;
+    font-family:
+        Avenir, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+        "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    overflow: hidden;
+    background-color: #f9f4ff;
+    color: #191023;
+}
+
+.title {
+    width: 9vmax;
+}
+
+.header {
+    background-color: #7efcbd;
+    box-shadow: 0 10px 20px 5px rgba(168,182,191,0.6);
+    padding: 1em 1em;
+    text-align: center;
+    transition: all 1s ease-in-out;
+}
+
+#app {
+    transition: all 1s ease-in-out;
+}
+
+.header-hidden {
+    transform: translate(0px, -17.5vmax);
+}
+
+.header h2 {
+    font-size: 2vmax;
+    margin-top: 0px;
+}
+
+#nprogress .bar {
+    height: 5px !important;
+    box-shadow: 0 0 10px #29d, 0 0 10px #29d !important;
+}
+
+.btn {
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 600;
+    padding: .75em 1em;
+    transition: none;
+    margin: .25em 0;
+    position: relative;
+    width: 8em;
+}
+
+.btn-pink {
+    background-color: #bd7efc;
+    color: #191023;
+    box-shadow: 0 4px #764f9e;
+}
+
+.btn-pink:hover {
+    top: 2px;
+    box-shadow: 0 2px #764f9e;
+}
+
+.btn-pink:active {
+    box-shadow: 0 0 #bd7efc;
+    top: 4px;
+}
+
+.noselect {
+    /* https://stackoverflow.com/a/4407335/7220776 */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+button {
+    width: 100%;
+    height: 5%;
+}
+
+#image {
+    margin: 0 auto;
+    display: block;
+}
+
+#images {
+    display: flex;
+    flex-wrap: wrap;
+    height: 50%;
+}
+
+#webcam {
+    display: block;
+    margin: 0 auto;
+    border-radius: 3px;
+
+    transform: rotateY(180deg);
+    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+    -moz-transform:rotateY(180deg); /* Firefox */
+}
+
+.side-by-side {
+    align-content: center;
+    border-radius: 3px;
+    width: 50%;
+}
+
+.input-text, .output-text {
+    font-family: Roboto Mono,Courier,monospace;
+    font-size: 2em;
+    font-weight: bold;
+    margin-left: 1em;
+    min-height: 1em;
+}
+
+#scenario {
+    line-height: 8vmin;
+    display: block;
+}
+
+#letter {
+    height: 10vh;
+}
+
+.ball {
+  position: absolute;
+  border-radius: 100%;
+  opacity: 0.7;
+  z-index: -1;
+}
